@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="../resources/jspsych.js"></script>
+  <script src="../resources/webgazer.js"></script>
+  <script src="../resources/jspsych-ext-webgazer.js"></script>
+
+  <script src="../resources/jquery.min.js"></script>
+  <script src="../resources/sweetalert2.min.js"></script>
+  <script src="../resources/translate.js"></script>
+
+  <script src="../resources/jspsych-webgazer-calibrate.js"></script>
+  <script src="../resources/jspsych-webgazer-init-camera.js"></script>
+  <script src="../resources/jspsych-webgazer-validate-single-point.js"></script>
+
+  <script src="../resources/jspsych-html-button-response.js"></script>
+
+  <script src="../resources/et-utilities.js"></script>
+  <script src="../resources/et-experiment.js"></script>
+
+  <link rel="stylesheet" href="../resources/jspsych.css">
+  <link rel="stylesheet" href="../resources/bootstrap.min.css">
+  <link rel="stylesheet" href="../resources/custom.css">
+  <title>Webgazer - Eye Tracking Experiment Example</title>
+</head>
+
+<body>
+</body>
+
+<script>
+  // Load translations from JSON file
+  _.loadTranslations('translations.json');
+
+  let trials = utilities.loadData('data_3_images.csv')
+
+  // Shuffle the non-practice trials according to two fields
+  utilities.shuffle(trials, ["counterbalance", "block"])
+
+  // Some custom experiment option
+  let experimentOptions = {
+      /* Custom HTML with buttons for responses */
+      custom_html: `
+      <div class="container-fluid" style="height: 100%;border: solid #FFF;border-width: 4vh 0.5vw 4vh 0.5vw;">
+          <div class="row" style="height: 48%;">
+              <div class="col-md-4" style="height: 100%">
+                  <img id="picture1" src="{{PICTURE1}}" class="img-fluid" style="display: none;height: 100%;">
+                  <button  class="response" data-response="somebutton">PICTURE 1</button>
+              </div>
+              <div class="col-md-4 offset-md-4" style="height: 100%">
+                  <img id="picture2" src="{{PICTURE2}}" class="img-fluid" style="display: none;height: 100%;">
+                  <button  class="response" data-response="secondbutton">PICTURE 2</button>
+              </div>
+          </div>
+          <div class="separator-row" style="height: 6%;">
+          </div>
+          <div class="row" style="height: 48%;">
+              <div class="col-md-4 offset-md-4" style="height: 100%">
+                  <img id="picture3" src="{{PICTURE3}}" class="img-fluid" style="display: none;height: 100%;">
+                  <button  class="response" data-response="hardetbuttontobutton">PICTURE 3</button>
+              </div>
+          </div>
+      </div>`,
+
+      single_response: false,
+      response_ends_trial: false,
+      response_allowed_while_playing: true,
+  }
+  let experimentDetails = utilities.prepareExperiment(trials, [], experimentOptions);
+  let experimentTimeline = experimentDetails[0];
+  let imageFiles = experimentDetails[2];
+  let audioFiles = experimentDetails[3];
+
+  let timeline = [];
+  timeline.push({
+    type: 'html-button-response',
+    stimulus: `
+      <p>This experiment uses your camera for eye tracking.</p>
+      <p>In order to participate you must allow the experiment to use your camera.</p>
+      <p>You will be prompted to do this on the next screen.</p>
+      <p>If you do not want to permit the experiment to use your camera, please close the page.</p>
+    `,
+    choices: ['Click to begin'],
+  });
+
+  // Add experiment trials to the end of timeline
+  timeline = timeline.concat(experimentTimeline);
+
+
+  timeline.push({
+    type: 'html-button-response',
+    choices: ['CSV', 'JSON'],
+    stimulus: `<p>Done!</p><p>If you'd like to download a copy of the data to explore, click the format you'd like below</p>`,
+    on_finish: function(data){
+      if(data.response === 0){
+        jsPsych.data.get().localSave('csv','webgazer-sample-data.csv');
+      }
+      if(data.response === 1){
+        jsPsych.data.get().localSave('json', 'webgazer-sample-data.json');
+      }
+    }
+  });
+
+
+  jsPsych.init({
+    timeline: timeline,
+    extensions: [
+      {type: 'webgazer'}
+    ],
+    on_finish: function() {
+    },
+    preload_images: imageFiles,
+    preload_audio: audioFiles,
+    show_preload_progress_bar: true,
+  })
+</script>
+
+</html>

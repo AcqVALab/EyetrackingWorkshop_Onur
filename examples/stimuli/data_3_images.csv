@@ -1,0 +1,9 @@
+id,condition,picture1,picture2,picture3,audio,counterbalance,block
+Trial1,SOV,l_image1.png,l_image2.png,l_image3.png,audio1.mp3,1,1
+Trial2,SOV,l_image2.png,l_image3.png,l_image4.png,audio2.mp3,1,2
+Trial3,SOV,l_image3.png,l_image4.png,l_image5.png,audio3.mp3,1,1
+Trial4,SOV,l_image4.png,l_image5.png,l_image6.png,audio4.mp3,1,2
+Trial5,OSV,l_image5.png,l_image6.png,l_image1.png,audio1.mp3,2,1
+Trial6,OSV,l_image6.png,l_image1.png,l_image2.png,audio2.mp3,2,2
+Trial7,OSV,l_image1.png,l_image4.png,l_image3.png,audio3.mp3,2,1
+Trial8,OSV,l_image2.png,l_image5.png,l_image4.png,audio4.mp3,2,2

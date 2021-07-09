@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="../resources/jspsych.js"></script>
+  <script src="../resources/webgazer.js"></script>
+  <script src="../resources/jspsych-ext-webgazer.js"></script>
+
+  <script src="../resources/jquery.min.js"></script>
+  <script src="../resources/sweetalert2.min.js"></script>
+  <script src="../resources/translate.js"></script>
+
+  <script src="../resources/jspsych-webgazer-calibrate.js"></script>
+  <script src="../resources/jspsych-webgazer-init-camera.js"></script>
+  <script src="../resources/jspsych-webgazer-validate-single-point.js"></script>
+
+  <script src="../resources/jspsych-html-button-response.js"></script>
+  <script src="../resources/jspsych-fullscreen.js"></script>
+
+  <script src="../resources/et-utilities.js"></script>
+  <script src="../resources/et-experiment.js"></script>
+  <script src="../resources/et-browser-check.js"></script>
+
+  <link rel="stylesheet" href="../resources/jspsych.css">
+  <link rel="stylesheet" href="../resources/bootstrap.min.css">
+  <link rel="stylesheet" href="../resources/custom.css">
+  <title>Webgazer - Eye Tracking Experiment Example</title>
+</head>
+
+<body>
+</body>
+
+<script>
+  // Load translations from JSON file
+  _.loadTranslations('translations.json');
+
+  let trials = utilities.loadData('data_2_images.csv')
+
+  // Shuffle the non-practice trials according to two fields
+  utilities.shuffle(trials, ["counterbalance", "block"])
+
+  // Some custom experiment options
+  let experimentOptions = {
+      calibration_mode: 'click',
+      recalibrate_after_n_seconds: 45,
+      recalibrate_after_n_trials: 3,
+      calibration_points: [[10, 10], [10, 50], [10, 90], [50, 10], [50, 50], [50, 90], [90, 10], [90, 50], [90, 90]],
+      repetitions_per_point: 2,
+      randomize_calibration_order: true,
+      minimum_calibration_precision: 30,
+
+      response_keys: ['F', 'J'],  // Accept key presses as input
+      center_gaze_after_trial: false,
+      single_response: false,
+      response_ends_trial: false,
+      trial_ends_after_audio: true,
+      response_allowed_while_playing: true,
+      pictures_delay: 1000,
+      audio_delay: 2000,
+  }
+  let experimentDetails = utilities.prepareExperiment(trials, [], experimentOptions);
+  let experimentTimeline = experimentDetails[0];
+  let imageFiles = experimentDetails[2];
+  let audioFiles = experimentDetails[3];
+
+  let timeline = [];
+  timeline.push({
+    type: 'html-button-response',
+    stimulus: `
+      <p>This experiment uses your camera for eye tracking.</p>
+      <p>In order to participate you must allow the experiment to use your camera.</p>
+      <p>You will be prompted to do this on the next screen.</p>
+      <p>If you do not want to permit the experiment to use your camera, please close the page.</p>
+    `,
+    choices: ['Click to begin'],
+  });
+
+  // Add experiment trials to the end of timeline
+  timeline = timeline.concat(experimentTimeline);
+
+
+  timeline.push({
+    type: 'html-button-response',
+    choices: ['CSV', 'JSON'],
+    stimulus: `<p>Done!</p><p>If you'd like to download a copy of the data to explore, click the format you'd like below</p>`,
+    on_finish: function(data){
+      if(data.response === 0){
+        jsPsych.data.get().localSave('csv','webgazer-sample-data.csv');
+      }
+      if(data.response === 1){
+        jsPsych.data.get().localSave('json', 'webgazer-sample-data.json');
+      }
+    }
+  });
+
+
+  jsPsych.init({
+    timeline: timeline,
+    extensions: [
+      {type: 'webgazer'}
+    ],
+    on_finish: function() {
+    },
+    preload_images: imageFiles,
+    preload_audio: audioFiles,
+    show_preload_progress_bar: true,
+  })
+</script>
+
+</html>

@@ -1,0 +1,9 @@
+id,condition,picture1,picture2,audio,counterbalance,block
+Trial1,SOV,image1.jpg,image2.jpg,audio1.mp3,1,1
+Trial2,SOV,image2.jpg,image3.jpg,audio2.mp3,1,2
+Trial3,SOV,image3.jpg,image4.jpg,audio3.mp3,1,1
+Trial4,SOV,image4.jpg,image5.jpg,audio4.mp3,1,2
+Trial5,OSV,image5.jpg,image6.jpg,audio1.mp3,2,1
+Trial6,OSV,image6.jpg,image1.jpg,audio2.mp3,2,2
+Trial7,OSV,image1.jpg,image4.jpg,audio3.mp3,2,1
+Trial8,OSV,image2.jpg,image5.jpg,audio4.mp3,2,2
