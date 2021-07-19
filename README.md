@@ -1,5 +1,7 @@
 # Eye-Tracking Experiments for Gorilla
-This repository contains the source code for modules used in eye-tracking experiments on Gorilla platform.
+This repository contains the source code for modules used in eye-tracking experiments on the Gorilla platform.
+
+A video recorded during the workshop can be watched [here](https://www.youtube.com/watch?v=bkNe61SAOKk).
 
 ## Gorilla Project Configuration
 - Create a new "Code Editor Task" on Gorilla
