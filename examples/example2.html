@@ -35,7 +35,7 @@
   let trials = utilities.loadData('data_3_images.csv')
 
   // Shuffle the non-practice trials according to two fields
-  utilities.shuffle(trials, ["counterbalance", "block"])
+  trials = utilities.shuffle(trials, ["counterbalance", "block"])
 
   // Some custom experiment option
   let experimentOptions = {

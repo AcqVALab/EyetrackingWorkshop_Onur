@@ -256,7 +256,7 @@ window.utilities = (function () {
         }
 
         // Shuffle the data groups
-        return jsPsych.randomization.shuffle(dataGroups);
+        return jsPsych.randomization.shuffle(dataGroups).flat();
     }
 
     module.round = function (number, decimals = 2) {
