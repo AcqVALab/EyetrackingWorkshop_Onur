@@ -18,7 +18,7 @@ gorilla.ready(function() {
 
     // TODO Decide if you want to shuffle your data
     // Shuffle the non-practice trials according to two fields
-    utilities.shuffle(trials, ["counterbalance", "block"])
+    trials = utilities.shuffle(trials, ["counterbalance", "block"])
 
     // TODO Apply any custom experiment options
     let experimentOptions = {
